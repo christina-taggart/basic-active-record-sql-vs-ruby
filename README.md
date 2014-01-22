@@ -47,11 +47,7 @@ The idea behind most Ruby ORMs is that your model classes inherit from a base cl
 
 We're going to implement **ActiveRecord, Jr.** to get an idea of how one might build an ORM.  This will make it much easier to reason about how the real ActiveRecord works once we get there, and will answer many of your questions about how to organize database calls in your code.
 
-## Objectives
-
-### Download the Student Skeleton Application
-
-<!-- First, [go here to download the student skeleton application](http://cl.ly/260238470M3I).  This is a ZIP file that will uncompress into a directory called `activerecord_jr`.   -->
+#### Working with a Skeleton Application
 
 This challenge starts with a base skeleton application which is located in the `active_record_jr` directory in the source directory. 
 The skeleton code assumes there are two tables: `students` and `cohorts`.  A student belongs to a single cohort and a cohort has many students.
@@ -95,10 +91,6 @@ There are a lot of files in the skeleton, so start by exploring the code.  Here'
     <td><code>Rakefile</code></td>
     <td>A list of <a href="http://en.wikipedia.org/wiki/Rake_%28software%29" target="_blank">rake</a> tasks, used to perform misc. one-off tasks like creating a database and seeding the database with dummy data</td>
   </tr>
-<!--   <tr>
-    <td><code>README.md</code></td>
-    <td>The README!  Sadly, empty right now.  Use this challenge as the README and submit if something's utterly confusing.</td>
-  </tr> -->
 </table>
 
 
