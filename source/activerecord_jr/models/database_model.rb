@@ -5,6 +5,61 @@ module Database
   class NotConnectedError < StandardError;end
 
   class Model
+    def initialize(attributes = {} )
+      attributes.symbolize_keys!
+      raise_error_if_invalid_attribute!(attributes.keys)
+       @attributes = {}
+
+       self.class.attribute_names.each do |name|
+        @attributes[name] = attributes[name]
+    end
+
+    @old_attributes = @attributes.dup
+    end
+
+    def save
+      new_record? ? results = insert! : results = update!
+      @old_attributes = @attributes.dup
+      results
+    end
+
+    def new_record?
+      self[:id].nil?
+    end
+
+    def [](attribute)
+      raise_error_if_invalid_attribute!(attribute)
+      @attributes[attribute]
+    end
+
+    def []=(attribute, value)
+      raise_error_if_invalid_attribute!(attribute)
+      @attributes[attribute] = value
+    end
+
+    def self.all
+      p self.new.class.to_s.downcase + "s"
+      Database::Model.execute("SELECT * FROM #{self.new.class.to_s.downcase + "s"}").map do |row|
+        self.new(row)
+      end
+    end
+
+    def self.create(attributes)
+      record = self.new(attributes)
+      record.save
+      record
+    end
+
+    def self.where(query, *args)
+      Database::Model.execute("SELECT * FROM #{self.new.class.to_s.downcase + "s"} WHERE #{query}", *args).map do |row|
+        self.new(row)
+      end
+    end
+
+    def self.find(pk)
+      self.where('id = ?', pk).first
+    end
+
     def self.inherited(klass)
     end
 

@@ -16,6 +16,7 @@ describe Cohort do
   it "able to initialize" do
     Cohort.new.should be_an_instance_of Cohort
   end
+
 end
 
 describe Student do
@@ -34,7 +35,10 @@ describe Student do
   it "able to initialize" do
     Student.new.should be_an_instance_of Student
   end
+
 end
+
+
 
 
 
