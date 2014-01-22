@@ -1,4 +1,7 @@
 class Student < Database::Model
+
+  # CLASS METHODS
+
   def self.all
     Database::Model.execute("SELECT * FROM students").map do |row|
       Student.new(row)
@@ -8,7 +11,6 @@ class Student < Database::Model
   def self.create(attributes)
     record = self.new(attributes)
     record.save
-
     record
   end
 
@@ -22,9 +24,10 @@ class Student < Database::Model
     self.where('id = ?', pk).first
   end
 
+  # INSTANCE METHODS
+
   self.attribute_names =  [:id, :cohort_id, :first_name, :last_name, :email,
                            :gender, :birthdate, :created_at, :updated_at]
-
 
   attr_reader :attributes, :old_attributes
 
@@ -37,20 +40,6 @@ class Student < Database::Model
   def new_record?
     self[:id].nil?
   end
-
-  # e.g., student['first_name'] #=> 'Steve'
-  # def [](attribute)
-  #   raise_error_if_invalid_attribute!(attribute)
-
-  #   @attributes[attribute]
-  # end
-
-  # # e.g., student['first_name'] = 'Steve'
-  # def []=(attribute, value)
-  #   raise_error_if_invalid_attribute!(attribute)
-
-  #   @attributes[attribute] = value
-  # end
 
   def cohort
     Cohort.where('id = ?', self[:cohort_id]).first

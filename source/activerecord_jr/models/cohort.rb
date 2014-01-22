@@ -1,4 +1,7 @@
 class Cohort < Database::Model
+
+  # CLASS METHODS
+
   def self.all
     Database::Model.execute("SELECT * FROM cohorts").map do |row|
       Cohort.new(row)
@@ -22,6 +25,8 @@ class Cohort < Database::Model
     self.where('id = ?', pk).first
   end
 
+  # INSTANCE METHODS
+
   self.attribute_names =  [:id, :name, :created_at, :updated_at]
 
   attr_reader :attributes, :old_attributes
@@ -29,18 +34,6 @@ class Cohort < Database::Model
   def table_name
     "cohorts"
   end
-
-  # def [](attribute)
-  #   raise_error_if_invalid_attribute!(attribute)
-
-  #   @attributes[attribute]
-  # end
-
-  # def []=(attribute, value)
-  #   raise_error_if_invalid_attribute!(attribute)
-
-  #   @attributes[attribute] = value
-  # end
 
   def students
     Student.where('cohort_id = ?', self[:id])
