@@ -8,6 +8,16 @@ module Database
     def self.inherited(klass)
     end
 
+    def initialize(attributes = {})
+      attributes.symbolize_keys!
+      raise_error_if_invalid_attribute!(attributes.keys)
+      @attributes = {}
+      self.class.attribute_names.each do |name|
+        @attributes[name] = attributes[name]
+      end
+      @old_attributes = @attributes.dup
+    end
+
     def self.connection
       @connection
     end

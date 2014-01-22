@@ -23,25 +23,9 @@ class Student < Database::Model
   end
 
   self.attribute_names =  [:id, :cohort_id, :first_name, :last_name, :email,
-                           :gender, :birthdate, :created_at, :updated_at] 
+                           :gender, :birthdate, :created_at, :updated_at]
 
   attr_reader :attributes, :old_attributes
-
-  # e.g., Student.new(:id => 1, :first_name => 'Steve', :last_name => 'Rogers', ...)
-  def initialize(attributes = {})
-    attributes.symbolize_keys!
-
-    raise_error_if_invalid_attribute!(attributes.keys)
-
-    # This defines the value even if it's not present in attributes
-    @attributes = {}
-
-    Student.attribute_names.each do |name|
-      @attributes[name] = attributes[name]
-    end
-
-    @old_attributes = @attributes.dup
-  end
 
   def save
     if new_record?
