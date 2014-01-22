@@ -5,6 +5,21 @@ module Database
   class NotConnectedError < StandardError;end
 
   class Model
+
+
+    def initialize( attributes = {})
+      attributes.symbolize_keys!
+      raise_error_if_invalid_attribute!(attributes.keys)
+
+      @attributes = {}
+
+      self.class.attribute_names.each do |name|
+        @attributes[name] = attributes[name]
+      end
+
+      @old_attributes = @attributes.dup
+    end
+
     def self.inherited(klass)
     end
 
@@ -15,6 +30,32 @@ module Database
     def self.filename
       @filename
     end
+
+    def save
+      if new_record?
+        results = insert!
+      else
+        results = update!
+      end
+
+      # When we save, remove changes between new and old attributes
+      @old_attributes = @attributes.dup
+
+      results
+    end
+
+    def [](attribute)
+      raise_error_if_invalid_attribute!(attribute)
+
+      @attributes[attribute]
+    end
+
+    def []=(attribute, value)
+      raise_error_if_invalid_attribute!(attribute)
+
+      @attributes[attribute] = value
+    end
+
 
     def self.database=(filename)
       @filename = filename.to_s

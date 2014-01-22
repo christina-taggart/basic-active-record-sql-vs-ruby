@@ -14,3 +14,6 @@ darcey = Student.create({:first_name => 'Darcey', :last_name => 'Lachtman', :ema
 darcey[:cohort_id] = 1
 p darcey.cohort[:name] == "Danger Zone"
 
+this_cohort = Cohort.new({:name => "Fort Kickass"})
+this_cohort.save
+p this_cohort
