@@ -1,3 +1,4 @@
+require_relative 'database_model.rb'
 class Student < Database::Model
   def self.all
     Database::Model.execute("SELECT * FROM students").map do |row|
@@ -23,18 +24,13 @@ class Student < Database::Model
   end
 
   self.attribute_names =  [:id, :cohort_id, :first_name, :last_name, :email,
-                           :gender, :birthdate, :created_at, :updated_at] 
+                           :gender, :birthdate, :created_at, :updated_at]
 
   attr_reader :attributes, :old_attributes
 
   # e.g., Student.new(:id => 1, :first_name => 'Steve', :last_name => 'Rogers', ...)
   def initialize(attributes = {})
-    attributes.symbolize_keys!
-
-    raise_error_if_invalid_attribute!(attributes.keys)
-
-    # This defines the value even if it's not present in attributes
-    @attributes = {}
+    super
 
     Student.attribute_names.each do |name|
       @attributes[name] = attributes[name]
@@ -43,37 +39,10 @@ class Student < Database::Model
     @old_attributes = @attributes.dup
   end
 
-  def save
-    if new_record?
-      results = insert!
-    else
-      results = update!
-    end
-
-    # When we save, remove changes between new and old attributes
-    @old_attributes = @attributes.dup
-
-    results
-  end
-
   # We say a record is "new" if it doesn't have a defined primary key in its
   # attributes
   def new_record?
     self[:id].nil?
-  end
-
-  # e.g., student['first_name'] #=> 'Steve'
-  def [](attribute)
-    raise_error_if_invalid_attribute!(attribute)
-
-    @attributes[attribute]
-  end
-
-  # e.g., student['first_name'] = 'Steve'
-  def []=(attribute, value)
-    raise_error_if_invalid_attribute!(attribute)
-
-    @attributes[attribute] = value
   end
 
   def cohort

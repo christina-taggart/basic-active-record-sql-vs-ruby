@@ -1,3 +1,4 @@
+require_relative 'database_model.rb'
 class Cohort < Database::Model
   def self.all
     Database::Model.execute("SELECT * FROM cohorts").map do |row|
@@ -24,32 +25,17 @@ class Cohort < Database::Model
 
   self.attribute_names =  [:id, :name, :created_at, :updated_at]
 
-  attr_reader :attributes, :old_attributes
+  attr_reader :attributes, :old_attributes, :attribute_names
 
   # e.g., Cohort.new(:id => 1, :name => 'Alpha', :created_at => '2012-12-01 05:54:30')
-  def initialize(attributes = {})
-    attributes.symbolize_keys!
-    raise_error_if_invalid_attribute!(attributes.keys)
+   def initialize(attributes = {})
 
-    @attributes = {}
-
+      super
     Cohort.attribute_names.each do |name|
       @attributes[name] = attributes[name]
     end
 
     @old_attributes = @attributes.dup
-  end
-
-  def [](attribute)
-    raise_error_if_invalid_attribute!(attribute)
-
-    @attributes[attribute]
-  end
-
-  def []=(attribute, value)
-    raise_error_if_invalid_attribute!(attribute)
-
-    @attributes[attribute] = value
   end
 
   def students
@@ -68,18 +54,6 @@ class Cohort < Database::Model
     self[:id].nil?
   end
 
-  def save
-    if new_record?
-      results = insert!
-    else
-      results = update!
-    end
-
-    # When we save, remove changes between new and old attributes
-    @old_attributes = @attributes.dup
-
-    results
-  end
 
   private
   def insert!
