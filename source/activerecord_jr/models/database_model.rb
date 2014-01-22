@@ -5,6 +5,72 @@ module Database
   class NotConnectedError < StandardError;end
 
   class Model
+#-----------
+
+  # e.g., Student.new(:id => 1, :first_name => 'Steve', :last_name => 'Rogers', ...)
+  def initialize(attributes = {})
+    attributes.symbolize_keys!
+    raise_error_if_invalid_attribute!(attributes.keys)
+
+    # This defines the value even if it's not present in attributes
+    @attributes = {}
+    self.class.attribute_names.each do |name|
+      @attributes[name] = attributes[name]
+    end
+
+    @old_attributes = @attributes.dup
+  end
+
+ def save
+    if new_record?
+      results = insert!
+    else
+      results = update!
+    end
+
+    # When we save, remove changes between new and old attributes
+    @old_attributes = @attributes.dup
+
+    results
+  end
+
+  # e.g., student['first_name'] #=> 'Steve'
+  def [](attribute)
+    raise_error_if_invalid_attribute!(attribute)
+    @attributes[attribute]
+  end
+
+  # e.g., student['first_name'] = 'Steve'
+  def []=(attribute, value)
+    raise_error_if_invalid_attribute!(attribute)
+    @attributes[attribute] = value
+  end
+
+ # We say a record is "new" if it doesn't have a defined primary key in its
+  # attributes
+  def new_record?
+    self[:id].nil?
+  end
+
+  def self.find(pk)
+    self.where('id = ?', pk).first
+  end
+
+  def self.create(attributes)
+    record = self.new(attributes)
+    record.save
+
+    record
+  end
+
+    def self.all
+    Database::Model.execute("SELECT * FROM students").map do |row|
+      Student.new(row)
+    end
+  end
+
+  #--------
+
     def self.inherited(klass)
     end
 
