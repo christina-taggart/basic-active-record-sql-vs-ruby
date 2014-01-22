@@ -18,12 +18,12 @@ class Student < Database::Model
     end
   end
 
-  def self.find(pk)
-    self.where('id = ?', pk).first
+  def self.find(id)
+    self.where('id = ?', id).first
   end
 
   self.attribute_names =  [:id, :cohort_id, :first_name, :last_name, :email,
-                           :gender, :birthdate, :created_at, :updated_at] 
+                           :gender, :birthdate, :created_at, :updated_at]
 
   attr_reader :attributes, :old_attributes
 

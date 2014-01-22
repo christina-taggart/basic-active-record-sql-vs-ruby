@@ -1,5 +1,5 @@
-class Cohort < Database::Model
-  def self.all
+class Tables < Database::Model
+def self.all
     Database::Model.execute("SELECT * FROM cohorts").map do |row|
       Cohort.new(row)
     end
@@ -111,4 +111,5 @@ class Cohort < Database::Model
     # We have to use the (potentially) old ID attributein case the user has re-set it.
     Database::Model.execute(update_sql, *values, self.old_attributes[:id])
   end
+end
 end
