@@ -23,3 +23,4 @@ require APP_ROOT.join('models', 'student')
 require APP_ROOT.join('models', 'cohort')
 
 Database::Model.database = APP_ROOT.join('db', 'students.db')
+

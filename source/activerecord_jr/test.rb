@@ -15,7 +15,7 @@ describe Cohort do
     it "should return an array of cohorts" do
       student_array = Cohort.all
       (student_array.empty?).should eq(false)
-      student_array.count.should eq (9)
+      student_array.count.should eq (10)
     end
   end
 
@@ -46,7 +46,7 @@ describe Student do
     it "should return an array of student objects" do
       students = Student.all
       (students.empty?).should eq(false)
-      p students.count.should eq (2000)
+      p students.count.should eq (2001)
     end
   end
 
@@ -72,28 +72,3 @@ describe Student do
   end
 end
 
-
-#
-
-#  jennifers = Student.where('first_name = ?', 'Jennifer')
-
-#  jennifers.first[:first_name]
-# "Jennifer"
-
-
-  # def self.where(query, *args)
-  #   Database::Model.execute("SELECT * FROM cohorts WHERE #{query}", *args).map do |row|
-  #     Cohort.new(row)
-  #   end
-  # end
-
-# describe app
-
-
-# cohort = Cohort.find(1)
-# cohort[:name] = 'Best Cohort Ever'
-# cohort.save
-
-# # This re-queries the database, so we're checking that we actually
-# # saved the data as intended
-# Cohort.find(1)[:name] == 'Best Cohort Ever'
