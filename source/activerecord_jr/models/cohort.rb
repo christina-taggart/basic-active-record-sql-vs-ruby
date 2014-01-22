@@ -1,6 +1,5 @@
 class Cohort < Database::Model
   self.attribute_names =  [:id, :name, :created_at, :updated_at]
-
   attr_reader :attributes, :old_attributes
 
   def students

@@ -131,8 +131,7 @@ module Database
       self.class.attribute_names.include? attribute
     end
 
-    protected
-
+    private
     def insert!
       self[:created_at] = DateTime.now
       self[:updated_at] = DateTime.now
@@ -141,7 +140,7 @@ module Database
       values = self.attributes.values
       marks  = Array.new(fields.length) { '?' }.join(',')
 
-      insert_sql = "INSERT INTO cohorts (#{fields.join(',')}) VALUES (#{marks})"
+      insert_sql = "INSERT INTO #{self.class.new.class.to_s.downcase + "s"} (#{fields.join(',')}) VALUES (#{marks})"
 
       results = Database::Model.execute(insert_sql, *values)
 
@@ -157,12 +156,11 @@ module Database
       values = self.attributes.values
 
       update_clause = fields.map { |field| "#{field} = ?" }.join(',')
-      update_sql = "UPDATE cohorts SET #{update_clause} WHERE id = ?"
+      update_sql = "UPDATE #{self.class.new.class.to_s.downcase + "s"} SET #{update_clause} WHERE id = ?"
 
       # We have to use the (potentially) old ID attributein case the user has re-set it.
       Database::Model.execute(update_sql, *values, self.old_attributes[:id])
     end
-
 
     def self.prepare_value(value)
       case value
