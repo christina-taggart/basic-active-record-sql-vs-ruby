@@ -30,17 +30,17 @@ class Cohort < Database::Model
     "cohorts"
   end
 
-  def [](attribute)
-    raise_error_if_invalid_attribute!(attribute)
+  # def [](attribute)
+  #   raise_error_if_invalid_attribute!(attribute)
 
-    @attributes[attribute]
-  end
+  #   @attributes[attribute]
+  # end
 
-  def []=(attribute, value)
-    raise_error_if_invalid_attribute!(attribute)
+  # def []=(attribute, value)
+  #   raise_error_if_invalid_attribute!(attribute)
 
-    @attributes[attribute] = value
-  end
+  #   @attributes[attribute] = value
+  # end
 
   def students
     Student.where('cohort_id = ?', self[:id])
