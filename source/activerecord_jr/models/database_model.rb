@@ -12,6 +12,13 @@ module Database
       @connection
     end
 
+    def self.create(attributes)
+      record = self.new(attributes)
+      record.save
+
+      record
+    end
+
     def self.filename
       @filename
     end
@@ -55,6 +62,27 @@ module Database
       !self.connection.nil?
     end
 
+    def self.find(pk)
+      self.where('id = ?', pk).first
+    end
+
+    def initialize(attributes = {})
+      attributes.symbolize_keys!
+      raise_error_if_invalid_attribute!(attributes.keys)
+      # This defines the value even if it's not present in attributes
+      @attributes = {}
+      @attribute_names.each do |name|
+        @attributes[name] = attributes[name]
+      end
+      @old_attributes = @attributes.dup
+    end
+
+    # We say a record is "new" if it doesn't have a defined primary key in its
+    # attributes
+    def new_record?
+      self[:id].nil?
+    end
+
     def raise_error_if_invalid_attribute!(attributes)
       # This guarantees that attributes is an array, so we can call both:
       #   raise_error_if_invalid_attribute!("id")
@@ -65,6 +93,33 @@ module Database
           raise InvalidAttributeError, "Invalid attribute for #{self.class}: #{attribute}"
         end
       end
+    end
+
+    # e.g., student['first_name'] #=> 'Steve'
+    def [](attribute)
+      raise_error_if_invalid_attribute!(attribute)
+
+      @attributes[attribute]
+    end
+
+      # e.g., student['first_name'] = 'Steve'
+    def []=(attribute, value)
+      raise_error_if_invalid_attribute!(attribute)
+
+      @attributes[attribute] = value
+    end
+
+    def save
+      if new_record?
+        results = insert!
+      else
+        results = update!
+      end
+
+      # When we save, remove changes between new and old attributes
+      @old_attributes = @attributes.dup
+
+      results
     end
 
     def to_s
