@@ -1,4 +1,4 @@
-class Student < Database::Model
+  class Student < Database::Model
   def self.all
     Database::Model.execute("SELECT * FROM students").map do |row|
       Student.new(row)
@@ -23,7 +23,7 @@ class Student < Database::Model
   end
 
   self.attribute_names =  [:id, :cohort_id, :first_name, :last_name, :email,
-                           :gender, :birthdate, :created_at, :updated_at] 
+                           :gender, :birthdate, :created_at, :updated_at]
 
   attr_reader :attributes, :old_attributes
 
