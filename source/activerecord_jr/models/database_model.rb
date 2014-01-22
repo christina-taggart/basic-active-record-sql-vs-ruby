@@ -5,8 +5,50 @@ module Database
   class NotConnectedError < StandardError;end
 
   class Model
+    attr_reader :attributes, :old_attributes
+
+    def initialize(klass, attributes={})
+      attributes.symbolize_keys!
+      self.class.attribute_names = klass.attribute_names
+      raise_error_if_invalid_attribute!(attributes.keys)
+
+      @attributes = {}
+
+      p "attribute_names here is #{self.class.attribute_names}"
+      self.class.attribute_names.each do |name|
+        @attributes[name] = attributes[name]
+      end
+
+      @old_attributes = @attributes.dup
+    end
+
     def self.inherited(klass)
     end
+
+    def new_record?
+      self[:id].nil?
+    end
+
+    def save
+      if new_record?
+        results = insert!
+      else
+        results = update!
+      end
+      @old_attributes = @attributes.dup
+      results
+    end
+
+    def [](attribute)
+      raise_error_if_invalid_attribute!(attribute)
+      @attributes[attribute]
+    end
+
+    def []=(attribute, value)
+      raise_error_if_invalid_attribute!(attribute)
+      @attributes[attribute] = value
+    end
+
 
     def self.connection
       @connection
@@ -73,6 +115,8 @@ module Database
     end
 
     def valid_attribute?(attribute)
+      p "attribute is #{attribute.is_a? Symbol}"
+      p "attribute_names is #{self.class.attribute_names}"
       self.class.attribute_names.include? attribute
     end
 
