@@ -1,6 +1,12 @@
-# Activerecord Jr 1 A Basic Orm 
+# ActiveRecord Jr 1 A Basic ORM
  
 ##Learning Competencies 
+ 
+* Use Ruby commands to encapsulate standard SQL CRUD operations on a relational database
+* Abstract a pattern for a model after identifying repetitions in code and relationships in data
+* Organize code for consistency and readability
+* Use database tools (like sqlite3) to view data and test outcomes of Ruby code
+* Build test methods with descriptive output and clear indicators of passing tests.
 
 ##Summary 
 
@@ -45,9 +51,12 @@ We're going to implement **ActiveRecord, Jr.** to get an idea of how one might b
 
 ### Download the Student Skeleton Application
 
-First, [go here to download the student skeleton application](http://cl.ly/260238470M3I).  This is a ZIP file that will uncompress into a directory called `activerecord_jr`.  This code assumes there are two tables: `students` and `cohorts`.  A student belongs to a single cohort and a cohort has many students.
+<!-- First, [go here to download the student skeleton application](http://cl.ly/260238470M3I).  This is a ZIP file that will uncompress into a directory called `activerecord_jr`.   -->
 
-This might be the most advanced app you've seen, but don't freak out!  Here's what each file means:
+This challenge starts with a base skeleton application which is located in the `active_record_jr` directory in the source directory. 
+The skeleton code assumes there are two tables: `students` and `cohorts`.  A student belongs to a single cohort and a cohort has many students.
+
+There are a lot of files in the skeleton, so start by exploring the code.  Here's what each file means:
 
 <table class="table table-bordered table-striped">
   <tr>
@@ -86,13 +95,16 @@ This might be the most advanced app you've seen, but don't freak out!  Here's wh
     <td><code>Rakefile</code></td>
     <td>A list of <a href="http://en.wikipedia.org/wiki/Rake_%28software%29" target="_blank">rake</a> tasks, used to perform misc. one-off tasks like creating a database and seeding the database with dummy data</td>
   </tr>
-  <tr>
+<!--   <tr>
     <td><code>README.md</code></td>
-    <td>The README!  Sadly, empty right now.  Use this challenge as the README and go bug Jesse if something's utterly confusing.</td>
-  </tr>
+    <td>The README!  Sadly, empty right now.  Use this challenge as the README and submit if something's utterly confusing.</td>
+  </tr> -->
 </table>
 
-### Set up the Skeleton App
+
+##Releases
+
+###Release 0 : Set up the Skeleton App
 
 Run the following commands inside the `activerecord_jr` directory to start interacting with the code:
 
@@ -134,7 +146,7 @@ Run the following commands inside the `activerecord_jr` directory to start inter
     cohort.students.first[:email]
     ```
 
-### Write Simple Tests
+###Release 1 : Write Simple Tests
 
 Before we refactor, we should write some simple tests.  The tests don't need to be super thorough, but it should verify the core functionality: reading/writing from/to the database, updating attributes, etc.
 
@@ -164,7 +176,9 @@ require_relative 'app'
 
 When you run `test.rb` it should print out useful information so that it's easy as pie to tell when you've (accidentally) broken something.
 
-### Refactor Into the Base Class
+If you like, you can push yourself and write your tests in [RSpec](); if not it is fine to stick to basic assert statements.
+
+###Release 2 : Refactor Into the Base Class
 
 There are three core files to this application:
 
@@ -183,19 +197,18 @@ Be careful because the base class only knows what it's told.  `Database::Model` 
 
 Feel free to play around in the ActiveRecord, Jr. console to get a feel for how it works.  And **remember**, once a method is moved to `Database::Model` you might need to change hard-coded references to the classes the method came from.
 
-### Submit Your Refactored Code
-
-Upload `student.rb`, `cohort.rb`, and `database_model.rb` as a gist with three separate files.  You can add multiple files to a gist by clicking the "Add Another File" button.
-
-### Questions for Reflection
-
-* What did these refactorings accomplish?
-* If we decided to add or remove a field in the database, how many changes on the code would you have had to make before? What about after?  What about other changes to the databases?
-* Using your new code, can you write a script to populate the database with dummy data? 
-
-##Releases
-###Release 0 
-
 ##Optimize Your Learning 
 
+Discuss the following questions with your pair or answer in a journal entry: 
+
+  * What did these refactorings accomplish?
+  * If we decided to add or remove a field in the database, how many changes on the code would you have had to make before? What about after?  What about other changes to the databases?
+  * Using your new code, can you write a script to populate the database with dummy data? 
+
 ##Resources
+
+* [Object-relational mapping](http://en.wikipedia.org/wiki/Object-relational_mapping)
+* [ActiveRecord](http://guides.rubyonrails.org/active_record_querying.html), which is what Rails uses by default
+* [Sequel](http://sequel.rubyforge.org/)
+* [DataMapper](http://datamapper.org/)
+* [IRB session](http://en.wikipedia.org/wiki/Interactive_Ruby_Shell)
