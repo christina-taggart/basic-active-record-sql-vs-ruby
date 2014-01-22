@@ -24,3 +24,6 @@ p where_cohort
 p Student.find(2000)[:first_name] == 'Chaz'
 p Student.find(2001)[:first_name] == 'Spencer'
 p where_student
+
+jim = Student.create({:cohort_id => 10, :first_name => 'Jim', :last_name => 'Hensen', :email => 'jimhensen@gmail.com', :birthdate => '1950-11-04', :gender => 'm'})
+p jim

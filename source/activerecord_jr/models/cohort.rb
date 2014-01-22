@@ -27,30 +27,6 @@ class Cohort < Database::Model
   attr_reader :attributes, :old_attributes
 
   # e.g., Cohort.new(:id => 1, :name => 'Alpha', :created_at => '2012-12-01 05:54:30')
-  def initialize(attributes = {})
-    attributes.symbolize_keys!
-    raise_error_if_invalid_attribute!(attributes.keys)
-
-    @attributes = {}
-
-    Cohort.attribute_names.each do |name|
-      @attributes[name] = attributes[name]
-    end
-
-    @old_attributes = @attributes.dup
-  end
-
-  def [](attribute)
-    raise_error_if_invalid_attribute!(attribute)
-
-    @attributes[attribute]
-  end
-
-  def []=(attribute, value)
-    raise_error_if_invalid_attribute!(attribute)
-
-    @attributes[attribute] = value
-  end
 
   def students
     Student.where('cohort_id = ?', self[:id])
