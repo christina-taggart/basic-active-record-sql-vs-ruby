@@ -27,16 +27,6 @@ class Student < Database::Model
 
   attr_reader :attributes, :old_attributes
 
-  # e.g., Student.new(:id => 1, :first_name => 'Steve', :last_name => 'Rogers', ...)
-  def initialize(attributes = {})
-    super
-
-    Student.attribute_names.each do |name|
-      @attributes[name] = attributes[name]
-    end
-
-    @old_attributes = @attributes.dup
-  end
 
   # We say a record is "new" if it doesn't have a defined primary key in its
   # attributes

@@ -60,6 +60,11 @@ module Database
       raise_error_if_invalid_attribute!(attributes.keys)
 
       @attributes = {}
+      self.class.attribute_names.each do |name|
+      @attributes[name] = attributes[name]
+    end
+
+    @old_attributes = @attributes.dup
 
     end
 
