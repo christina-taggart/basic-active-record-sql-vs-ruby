@@ -65,6 +65,19 @@ module Database
       !self.connection.nil?
     end
 
+    def save
+      if new_record?
+        results = insert!
+      else
+        results = update!
+      end
+
+      # When we save, remove changes between new and old attributes
+      @old_attributes = @attributes.dup
+
+      results
+    end
+
     def raise_error_if_invalid_attribute!(attributes)
       # This guarantees that attributes is an array, so we can call both:
       #   raise_error_if_invalid_attribute!("id")

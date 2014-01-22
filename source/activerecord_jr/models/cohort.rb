@@ -57,17 +57,4 @@ class Cohort < Database::Model
   def new_record?
     self[:id].nil?
   end
-
-  def save
-    if new_record?
-      results = insert!
-    else
-      results = update!
-    end
-
-    # When we save, remove changes between new and old attributes
-    @old_attributes = @attributes.dup
-
-    results
-  end
 end
